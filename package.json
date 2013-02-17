@@ -2,30 +2,39 @@
   "name": "brain",
   "version": "0.0.0",
   "description": "flexible library for creating, training and analyzing artificial neural networks",
-  "author": "Claudio Albertin <claudio.albertin@me.com>",
+  "author": {
+    "name": "Claudio Albertin",
+    "email": "<claudio.albertin@me.com>"
+  },
   "license": "BSD",
   "readmeFilename": "README.md",
   "main": "./lib/brain.js",
   "directories": {
-    "test": "test"
+    "lib": "lib",
+    "test": "test",
+    "build": "build"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha test -R spec -c --recursive"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ClaudioAlbertin/brain.git"
+    "url": "https://github.com/ClaudioAlbertin/brain.git"
   },
   "keywords": [
     "neural network",
     "machine learning",
     "brain"
   ],
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
-    "mocha": "1.8.x",
-    "chai": "1.5.x"
+    "mocha": "~1.8.1",
+    "chai": "~1.5.0",
+    "grunt": "0.4.0rc8",
+    "grunt-contrib-concat": "~0.1.1",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-uglify": "git+https://github.com/gruntjs/grunt-contrib-uglify.git#f18631b6ef10b80ed6ff4d2d9b022256769888f8",
+    "grunt-browserify": "~0.1.2",
+    "grunt-simple-mocha": "~0.3.2"
   }
 }
