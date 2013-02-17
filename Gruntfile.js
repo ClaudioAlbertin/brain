@@ -96,7 +96,7 @@ module.exports = function (grunt) {
 
   // register tasks
   grunt.registerTask('test', ['jshint', 'simplemocha']);
-  grunt.registerTask('browser', ['jshint:library', 'simplemocha', 'browserify', 'concat:browser', 'uglify:browser']);
+  grunt.registerTask('build', ['jshint:library', 'simplemocha', 'browserify', 'concat:browser', 'uglify:browser']);
   grunt.registerTask('default', ['jshint', 'simplemocha', 'browserify', 'concat:browser', 'uglify:browser']);
 
 };
