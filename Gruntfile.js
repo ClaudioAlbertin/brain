@@ -5,13 +5,14 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+      '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
+      ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+      ' Licensed <%= pkg.license %> \n */\n',
     jshint: {
       options: {
         camelcase: true,
         eqeqeq: true,
+        forin: true,
         immed: true,
         indent: 2,
         latedef: true,
@@ -21,18 +22,20 @@ module.exports = function (grunt) {
         nonew: true,
         quotmark: 'single',
         trailing: true,
-        sub: true,
         undef: true,
         unused: true,
         boss: true,
         eqnull: true,
+        expr: true,
+        node: true,
+        browser: true,
+        strict: false,
         globals: {
-          module: true,
-          exports: true,
-          process: false,
-          require: false,
+          before: false,
+          after: false,
+          beforeEach: false,
+          afterEach: false,
           describe: false,
-          console: false,
           it: false
         }
       },
@@ -59,8 +62,9 @@ module.exports = function (grunt) {
     },
     browserify: {
       library: {
+        ignore: ['lapack'],
         src: '<%= pkg.directories.lib %>/**/*.js',
-        dest: '<%= pkg.directories.build %>/<%= pkg.name %>.browser.js'
+        dest: '<%= pkg.directories.build %>/<%= pkg.name %>.client.js'
       }
     },
     concat: {
@@ -68,8 +72,8 @@ module.exports = function (grunt) {
         banner: '<%= banner %>',
         stripBanners: true
       },
-      browser: {
-        src: '<%= browserify.library.dest %>.js',
+      client: {
+        src: '<%= pkg.directories.build %>/**/*.client.js',
         dest: '<%= pkg.directories.build %>/<%= pkg.name %>.bundle.js'
       }
     },
@@ -80,8 +84,8 @@ module.exports = function (grunt) {
           except: ['module', 'exports', 'process', 'require', 'Brain']
         }
       },
-      browser: {
-        src: '<%= concat.browser.dest %>',
+      client: {
+        src: '<%= concat.client.dest %>',
         dest: '<%= pkg.directories.build %>/<%= pkg.name %>.min.js'
       }
     }
@@ -96,7 +100,7 @@ module.exports = function (grunt) {
 
   // register tasks
   grunt.registerTask('test', ['jshint', 'simplemocha']);
-  grunt.registerTask('build', ['jshint:library', 'simplemocha', 'browserify', 'concat:browser', 'uglify:browser']);
-  grunt.registerTask('default', ['jshint', 'simplemocha', 'browserify', 'concat:browser', 'uglify:browser']);
+  grunt.registerTask('build', ['jshint:library', 'simplemocha', 'browserify', 'concat:client', 'uglify:client']);
+  grunt.registerTask('default', ['jshint', 'simplemocha', 'browserify', 'concat:client', 'uglify:client']);
 
 };

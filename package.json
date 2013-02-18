@@ -27,15 +27,19 @@
     "machine learning",
     "brain"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "sylvester": "0.0.21",
+    "lapack": "0.0.7",
+    "underscore": "~1.4.4"
+  },
   "devDependencies": {
     "mocha": "~1.8.1",
     "chai": "~1.5.0",
     "grunt": "0.4.0rc8",
-    "grunt-contrib-concat": "~0.1.1",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-uglify": "git+https://github.com/gruntjs/grunt-contrib-uglify.git#f18631b6ef10b80ed6ff4d2d9b022256769888f8",
-    "grunt-browserify": "~0.1.2",
-    "grunt-simple-mocha": "~0.3.2"
+    "grunt-simple-mocha": "~0.3.2",
+    "grunt-browserify": "git+https://github.com/jmreidy/grunt-browserify.git#54d6ccebbe082cd218dd979296ea8622ace75e79",
+    "grunt-contrib-concat": "~0.1.2"
   }
 }

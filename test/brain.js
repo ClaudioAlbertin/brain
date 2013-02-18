@@ -1,8 +1,9 @@
 var assert = require('chai').assert;
-var Brain  = require('../lib/brain');
+var brain  = require('../lib/brain');
 
-describe('Brain', function () {
-  it('should export a function', function () {
-    assert.isFunction(Brain, 'export is a function');
+describe('brain', function () {
+  it('should export an object', function () {
+    assert.isObject(brain, 'export is an object');
+    assert.property(brain, 'Perceptron', 'export contains the property perceptron');
   });
 });
