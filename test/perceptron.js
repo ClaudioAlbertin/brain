@@ -3,7 +3,7 @@ var sylvester = require('sylvester');
 var brain     = require('../lib/brain');
 var utils     = require('../lib/utils');
 
-var Perceptron = brain.Perceptron;
+var Perceptron = brain.networks.Perceptron;
 var Matrix     = sylvester.Matrix;
 var Vector     = sylvester.Vector;
 

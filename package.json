@@ -28,11 +28,11 @@
     "brain"
   ],
   "dependencies": {
-    "sylvester": "0.0.21",
+    "sylvester": "~0.0.21",
     "underscore": "~1.4.4"
   },
   "optionalDependencies": {
-    "lapack": "0.0.7"
+    "lapack": "~0.0.7"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
