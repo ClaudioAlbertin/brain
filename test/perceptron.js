@@ -41,13 +41,34 @@ describe('Perceptron', function () {
     perceptron = new Perceptron(layers, weights);
   });
 
+  describe('setup', function () {
+    var perceptron, setup;
+
+    beforeEach(function () {
+      setup = {
+        layers: layers,
+        weights: utils.exportWeights(weights)
+      };
+
+      perceptron = Perceptron.setup(setup);
+    });
+
+    it('should import layers correctly', function () {
+      assert.strictEqual(perceptron.layers, layers, 'layers match');
+    });
+
+    it('should import weights correctly', function () {
+      assert.deepEqual(perceptron.weights, weights);
+    });
+  });
+
   describe('constructor', function () {
     it('should set layers', function () {
       assert.strictEqual(perceptron.layers, layers, 'layers match');
     });
 
     it('should set weights if given', function () {
-      assert.strictEqual(perceptron.weights, weights, 'weights match');
+      assert.deepEqual(perceptron.weights, weights, 'weights match');
     });
 
     it('should set a default activation function', function () {
@@ -59,7 +80,7 @@ describe('Perceptron', function () {
     it('should set weights', function () {
       perceptron.setWeights(weights);
 
-      assert.strictEqual(perceptron.weights, weights, 'weights match');
+      assert.deepEqual(perceptron.weights, weights, 'weights match');
     });
 
     it('should throw an exception if weights are invalid', function () {

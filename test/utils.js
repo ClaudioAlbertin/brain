@@ -5,6 +5,30 @@ var utils     = require('../lib/utils');
 var Matrix = sylvester.Matrix;
 
 describe('Utils', function () {
+  var exportedWeights, importedWeights;
+
+  beforeEach(function () {
+    exportedWeights = [
+      [
+        [1, 2, 3],
+        [2, 3, 4]
+      ],
+      [
+        [3, 4, 5]
+      ]
+    ];
+
+    importedWeights = [
+      Matrix.create([
+        [1, 2, 3],
+        [2, 3, 4]
+      ]),
+      Matrix.create([
+        [3, 4, 5]
+      ])
+    ];
+  });
+
   describe('randomWeights', function () {
     it('should return an array of matrices with correct dimensions', function () {
       var layers  = [3, 5, 2];
@@ -29,7 +53,19 @@ describe('Utils', function () {
       var firstWeights  = utils.randomWeights(layers);
       var secondWeights = utils.randomWeights(layers);
 
-      assert.notStrictEqual(firstWeights, secondWeights, 'weights don\'t match');
+      assert.notDeepEqual(firstWeights, secondWeights, 'weights don\'t match');
+    });
+  });
+
+  describe('importWeights', function () {
+    it('should return a matching array of matrices', function () {
+      assert.deepEqual(utils.importWeights(exportedWeights), importedWeights, 'weights match');
+    });
+  });
+
+  describe('exportWeights', function () {
+    it('should return a matching multidimensional array', function () {
+      assert.deepEqual(utils.exportWeights(importedWeights), exportedWeights, 'weights match');
     });
   });
 
