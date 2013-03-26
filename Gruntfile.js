@@ -10,34 +10,34 @@ module.exports = function (grunt) {
       ' Licensed <%= pkg.license %> \n */\n',
     jshint: {
       options: {
-        camelcase: true,
-        eqeqeq: true,
-        forin: true,
-        immed: true,
-        indent: 2,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        noempty: true,
-        nonew: true,
-        quotmark: 'single',
-        trailing: true,
-        undef: true,
-        unused: true,
-        boss: true,
-        eqnull: true,
-        expr: true,
-        node: true,
-        browser: true,
-        strict: false,
-        laxcomma: true,
-        globals: {
-          before: false,
-          after: false,
-          beforeEach: false,
-          afterEach: false,
-          describe: false,
-          it: false
+        camelcase : true,
+        eqeqeq    : true,
+        forin     : true,
+        immed     : true,
+        indent    : 2,
+        latedef   : true,
+        newcap    : true,
+        noarg     : true,
+        noempty   : true,
+        nonew     : true,
+        quotmark  : 'single',
+        trailing  : true,
+        undef     : true,
+        unused    : true,
+        boss      : true,
+        eqnull    : true,
+        expr      : true,
+        node      : true,
+        browser   : true,
+        strict    : false,
+        laxcomma  : true,
+        globals   : {
+          before     : false,
+          after      : false,
+          beforeEach : false,
+          afterEach  : false,
+          describe   : false,
+          it         : false
         }
       },
       gruntfile: {
@@ -52,10 +52,10 @@ module.exports = function (grunt) {
     },
     simplemocha: {
       options: {
-        timeout: 3000,
-        ignoreLeaks: false,
-        ui: 'bdd',
-        reporter: 'spec'
+        timeout     : 3000,
+        ignoreLeaks : false,
+        ui          : 'bdd',
+        reporter    : 'dot'
       },
       all: {
         src: '<%= pkg.directories.test %>/**/*.js'
@@ -63,31 +63,31 @@ module.exports = function (grunt) {
     },
     browserify: {
       library: {
-        ignore: ['lapack'],
-        src: '<%= pkg.directories.lib %>/**/*.js',
-        dest: '<%= pkg.directories.build %>/<%= pkg.name %>.client.js'
+        ignore : ['lapack'],
+        src    : '<%= pkg.directories.lib %>/**/*.js',
+        dest   : '<%= pkg.directories.build %>/<%= pkg.name %>.client.js'
       }
     },
     concat: {
       options: {
-        banner: '<%= banner %>',
-        stripBanners: true
+        banner       : '<%= banner %>',
+        stripBanners : true
       },
       client: {
-        src: '<%= pkg.directories.build %>/**/*.client.js',
-        dest: '<%= pkg.directories.build %>/<%= pkg.name %>.bundle.js'
+        src  : '<%= pkg.directories.build %>/**/*.client.js',
+        dest : '<%= pkg.directories.build %>/<%= pkg.name %>.bundle.js'
       }
     },
     uglify: {
       options: {
-        banner: '<%= banner %>',
-        mangle: {
+        banner : '<%= banner %>',
+        mangle : {
           except: ['module', 'exports', 'process', 'require', 'Brain']
         }
       },
       client: {
-        src: '<%= concat.client.dest %>',
-        dest: '<%= pkg.directories.build %>/<%= pkg.name %>.min.js'
+        src  : '<%= concat.client.dest %>',
+        dest : '<%= pkg.directories.build %>/<%= pkg.name %>.min.js'
       }
     }
   });
@@ -101,7 +101,7 @@ module.exports = function (grunt) {
 
   // register tasks
   grunt.registerTask('test', ['jshint', 'simplemocha']);
-  grunt.registerTask('build', ['jshint:library', 'simplemocha', 'browserify', 'concat:client', 'uglify:client']);
+  grunt.registerTask('build', ['browserify', 'concat:client', 'uglify:client']);
   grunt.registerTask('default', ['jshint', 'simplemocha', 'browserify', 'concat:client', 'uglify:client']);
 
 };

@@ -1,13 +1,13 @@
 var fs     = require('fs');
 var path   = require('path');
 var assert = require('chai').assert;
+
 var brain  = require('../lib/brain');
 
 var sylvester = brain.sylvester;
 var utils     = brain.utils;
-
-var Matrix = sylvester.Matrix;
-var Vector = sylvester.Vector;
+var Matrix    = sylvester.Matrix;
+var Vector    = sylvester.Vector;
 
 describe('Utils', function () {
   var exportedWeights = [
@@ -104,11 +104,7 @@ describe('Utils', function () {
   });
 
   describe('findScale', function () {
-    var scale;
-
-    beforeEach(function () {
-      scale = utils.findScale(data);
-    });
+    var scale = utils.findScale(data);
 
     it('should return an object with correct structure', function () {
       assert.isObject(scale, 'return value is object');
