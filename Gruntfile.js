@@ -30,6 +30,7 @@ module.exports = function (grunt) {
         node: true,
         browser: true,
         strict: false,
+        laxcomma: true,
         globals: {
           before: false,
           after: false,
