@@ -12,7 +12,8 @@ describe('BackPropagation', function () {
   var setup    = require('../setups/bad-xnor');
   var examples = utils.importExamples(setup.examples);
   var options  = {
-    delta: utils.zeroWeights(setup.layers)
+    delta          : utils.zeroWeights(setup.layers),
+    regularization : 0
   };
 
   beforeEach(function () {
