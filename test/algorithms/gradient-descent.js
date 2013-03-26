@@ -22,7 +22,8 @@ describe('GradientDescent', function () {
     reportFrequency : 50,
     learningRate    : 1,
     targetError     : 0.2,
-    iterations      : 5000
+    iterations      : 5000,
+    minimalSpeed    : 0
   };
 
   beforeEach(function () {
