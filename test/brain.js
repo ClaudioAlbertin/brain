@@ -9,6 +9,6 @@ describe('brain', function () {
     assert.property(brain, 'algorithms', 'export contains algorithms');
     assert.property(brain, 'Network', 'export contains Network');
     assert.property(brain, 'Training', 'export contains Training');
-    assert.property(brain, 'Analysis', 'export contains Analysis');
+    // assert.property(brain, 'Analysis', 'export contains Analysis');
   });
 });

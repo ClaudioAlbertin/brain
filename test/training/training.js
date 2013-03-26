@@ -156,7 +156,8 @@ describe('Training', function () {
 
   describe('run', function () {
     it('should return an instance of TrainingResult', function () {
-      var result = training.run(examples);
+      var network = Network.fromJSON(setup);
+      var result  = training.setNetwork(network).run(examples);
 
       assert.instanceOf(result, TrainingResult, 'is instance of TrainingResult');
     });
