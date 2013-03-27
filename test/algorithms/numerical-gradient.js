@@ -1,20 +1,27 @@
-var assert    = require('chai').assert;
-var brain     = require('../../lib/brain');
-var Algorithm = require('../../lib/algorithm');
+var assert    = require('chai').assert
+  , brain     = require('../../lib/brain')
+  , Algorithm = require('../../lib/algorithm');
 
-var utils             = brain.utils;
-var Network           = brain.Network;
-var LogisticCost      = brain.algorithms.LogisticCost;
-var NumericalGradient = brain.algorithms.NumericalGradient;
+var utils             = brain.utils
+  , Network           = brain.Network
+  , LogisticCost      = brain.algorithms.LogisticCost
+  , NumericalGradient = brain.algorithms.NumericalGradient;
 
 describe('NumericalGradient', function () {
-  var numericalGradient, network;
+  var numericalGradient
+    , network
+    , setup
+    , examples
+    , options;
 
-  var setup    = require('../setups/bad-xnor');
-  var examples = utils.importExamples(setup.examples);
-  var options  = {
-    epsilon: 0.002
-  };
+  before(function () {
+    setup    = require('../setups/bad-xnor');
+    examples = utils.importExamples(setup.examples);
+
+    options  = {
+      epsilon: 0.002
+    };
+  });
 
   beforeEach(function () {
     network           = Network.fromJSON(setup);
@@ -79,23 +86,26 @@ describe('NumericalGradient', function () {
     });
 
     it('should use the given weights to compute the error', function () {
-      var firstRun  = numericalGradient.computeError(utils.randomWeights(network.layers));
-      var secondRun = numericalGradient.computeError(utils.randomWeights(network.layers));
+      var firstRun  = numericalGradient.computeError(utils.randomWeights(network.layers))
+        , secondRun = numericalGradient.computeError(utils.randomWeights(network.layers));
 
       assert.notEqual(firstRun, secondRun, 'errors are different, as expected');
     });
   });
 
   describe('run', function () {
-    it('should return an array of matrices with the same dimensions as the weights', function () {
-      var derivatives = numericalGradient.run();
+    var derivatives;
 
+    before(function () {
+      derivatives = numericalGradient.run();
+    });
+
+    it('should return an array of matrices with the same dimensions as the weights', function () {
       assert.isTrue(network.validateWeights(derivatives), 'dimensions match');
     });
 
     it('should not return an array of matrices of 0', function () {
-      var derivatives = numericalGradient.run();
-      var zero        = utils.zeroWeights(network.layers);
+      var zero = utils.zeroWeights(network.layers);
 
       assert.notDeepEqual(derivatives, zero, 'result is not 0');
     });

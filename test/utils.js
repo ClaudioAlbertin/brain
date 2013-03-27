@@ -1,81 +1,92 @@
-var fs     = require('fs');
-var path   = require('path');
-var assert = require('chai').assert;
+var fs     = require('fs')
+  , path   = require('path')
+  , assert = require('chai').assert;
 
 var brain  = require('../lib/brain');
 
-var sylvester = brain.sylvester;
-var utils     = brain.utils;
-var Matrix    = sylvester.Matrix;
-var Vector    = sylvester.Vector;
+var sylvester = brain.sylvester
+  , utils     = brain.utils;
+
+var Network = brain.Network
+  , Matrix  = sylvester.Matrix
+  , Vector  = sylvester.Vector;
 
 describe('Utils', function () {
-  var exportedWeights = [
-    [
-      [1, 2, 3],
-      [2, 3, 4]
-    ],
-    [
-      [3, 4, 5]
-    ]
-  ];
+  var exportedWeights
+    , importedWeights
+    , exportedExamples
+    , importedExamples
+    , data;
 
-  var importedWeights = [
-    Matrix.create([
-      [1, 2, 3],
-      [2, 3, 4]
-    ]),
-    Matrix.create([
-      [3, 4, 5]
-    ])
-  ];
+  before(function () {
+    // used in tests for importWeights and exportWeights
+    exportedWeights = [
+      [
+        [1, 2, 3],
+        [2, 3, 4]
+      ],
+      [
+        [3, 4, 5]
+      ]
+    ];
 
-  var exportedExamples = [
-    { input: [1, 2, 3], output: [2, 3, 4] },
-    { input: [3, 4, 5], output: [4, 5, 6] },
-    { input: [5, 6, 7], output: [6, 7, 8] }
-  ];
+    importedWeights = [
+      Matrix.create([
+        [1, 2, 3],
+        [2, 3, 4]
+      ]),
+      Matrix.create([
+        [3, 4, 5]
+      ])
+    ];
 
-  var importedExamples = [
-    { input: Vector.create([1, 2, 3]), output: Vector.create([2, 3, 4]) },
-    { input: Vector.create([3, 4, 5]), output: Vector.create([4, 5, 6]) },
-    { input: Vector.create([5, 6, 7]), output: Vector.create([6, 7, 8]) }
-  ];
+    // used in tests for importExamples and exportExamples
+    exportedExamples = [
+      { input: [1, 2, 3], output: [2, 3, 4] },
+      { input: [3, 4, 5], output: [4, 5, 6] },
+      { input: [5, 6, 7], output: [6, 7, 8] }
+    ];
 
-  var data = [
-    2000,
-    1000,
-    60,
-    -20,
-    -40,
-    -3000
-  ];
+    importedExamples = [
+      { input: Vector.create([1, 2, 3]), output: Vector.create([2, 3, 4]) },
+      { input: Vector.create([3, 4, 5]), output: Vector.create([4, 5, 6]) },
+      { input: Vector.create([5, 6, 7]), output: Vector.create([6, 7, 8]) }
+    ];
+
+    // used in tests for normalize, denormalize and findScale
+    data = [
+      2000,
+      1000,
+      60,
+      -20,
+      -40,
+      -3000
+    ];
+  });
 
   describe('randomWeights', function () {
-    it('should return an array of matrices with correct dimensions', function () {
-      var layers  = [3, 5, 2];
-      var weights = utils.randomWeights(layers);
-      var layer, previousLayer, layerWeights;
+    var layers;
 
-      assert.strictEqual(weights.length, layers.length - 1, 'dimensions match');
+    before(function () {
+      layers = [2, 3, 1];
+    });
 
-      for (var i = 1, l = layers.length; i < l; i++) {
-        layer         = layers[i];
-        previousLayer = layers[i - 1];
-        layerWeights  = weights[i - 1];
+    it('should return valid weights with correct dimensions', function () {
+      var network
+        , weights;
 
-        assert.instanceOf(layerWeights, Matrix, 'input is matrix');
-        assert.strictEqual(layerWeights.rows(), layer, 'dimensions match');
-        assert.strictEqual(layerWeights.cols(), previousLayer + 1, 'dimensions match');
-      }
+      network = new Network(layers);
+      weights = utils.randomWeights(layers);
+
+      assert.isTrue(network.validateWeights(weights), 'weights valid');
+      assert.deepEqual(utils.getLayers(weights), layers, 'layers match');
     });
 
     it('should return weights that are actually random', function () {
-      var layers = [3, 5, 2];
-      var firstWeights  = utils.randomWeights(layers);
-      var secondWeights = utils.randomWeights(layers);
+      var firstWeights  = utils.randomWeights(layers)
+        , secondWeights = utils.randomWeights(layers);
 
-      assert.notDeepEqual(firstWeights, secondWeights, 'weights don\'t match');
+      assert.notDeepEqual(firstWeights, secondWeights, 'weights do not match');
     });
   });
 
@@ -88,6 +99,68 @@ describe('Utils', function () {
   describe('exportWeights', function () {
     it('should return a matching multidimensional array', function () {
       assert.deepEqual(utils.exportWeights(importedWeights), exportedWeights, 'weights match');
+    });
+  });
+
+  describe('getDimensions', function () {
+    var dimensions
+      , weights;
+
+    before(function () {
+      dimensions = [
+        { rows: 3, cols: 3 },
+        { rows: 2, cols: 4}
+      ];
+
+      weights = [
+        Matrix.create([
+          [1, 2, 3],
+          [2, 3, 4],
+          [3, 4, 5]
+        ]),
+        Matrix.create([
+          [1, 2, 3, 4],
+          [2, 3, 4, 5]
+        ])
+      ];
+    });
+
+    it('should detect the correct dimensions', function () {
+      assert.deepEqual(utils.getDimensions(weights), dimensions);
+    });
+  });
+
+  describe('getLayers', function () {
+    var layers
+      , weights;
+
+    before(function () {
+      layers  = [2, 3, 1];
+      weights = utils.randomWeights(layers);
+    });
+
+    it('should detect the correct layer map', function () {
+      assert.deepEqual(utils.getLayers(weights), layers);
+    });
+  });
+
+  describe('detectBias', function () {
+    var layers
+      , biasedWeights
+      , unbiasedWeights;
+
+    before(function () {
+      layers          = [2, 3, 1];
+      biasedWeights   = utils.randomWeights(layers);
+      unbiasedWeights = utils.randomWeights(layers, false);
+    });
+
+    it('should detect bias unit if included', function () {
+      assert.isTrue(utils.detectBias(biasedWeights), 'bias unit detected');
+    });
+
+    it('should detect no bias unit if not included', function () {
+      assert.isFalse(utils.detectBias(unbiasedWeights), 'bias unit not detected');
     });
   });
 
@@ -104,7 +177,11 @@ describe('Utils', function () {
   });
 
   describe('findScale', function () {
-    var scale = utils.findScale(data);
+    var scale;
+
+    before(function () {
+      scale = utils.findScale(data);
+    });
 
     it('should return an object with correct structure', function () {
       assert.isObject(scale, 'return value is object');
@@ -134,15 +211,17 @@ describe('Utils', function () {
   describe('normalize', function () {
     var scale;
 
-    beforeEach(function () {
+    before(function () {
       scale = utils.findScale(data);
     });
 
     it('should return values between -1 and 1 (given the average of the data is 0)', function () {
-      var i, number, result;
+      var result
+        , x
+        , i;
 
-      for (i = 0; number = data[i]; i++) {
-        result = utils.normalize(number, scale);
+      for (i = 0; x = data[i]; i++) {
+        result = utils.normalize(x, scale);
 
         assert.operator(result, '<=', 1, 'result is smaller or equal to 1');
         assert.operator(result, '>=', -1, 'result is larger or equal to -1');
@@ -153,12 +232,14 @@ describe('Utils', function () {
   describe('denormalize', function () {
     var scale;
 
-    beforeEach(function () {
+    before(function () {
       scale = utils.findScale(data);
     });
 
     it('should bring values back to normal scale', function () {
-      var i, x, result;
+      var result
+        , x
+        , i;
 
       for (i = 0; x = data[i]; i++) {
         result = utils.normalize(x, scale);
@@ -201,7 +282,9 @@ describe('Utils', function () {
   });
 
   describe('addBiasUnit', function () {
-    var vector, biasedVector, modifiedVector;
+    var vector
+      , biasedVector
+      , modifiedVector;
 
     beforeEach(function () {
       vector         = Vector.create([5, 6, 7]);
@@ -215,15 +298,16 @@ describe('Utils', function () {
 
     it('should use a given modifier', function () {
       assert.deepEqual(utils.addBiasUnit(vector, function (x) {
-        return 2 * x;
+        return x * 2;
       }), modifiedVector);
     });
   });
 
   describe('toMatrix', function () {
-    var vector, matrix;
+    var vector
+      , matrix;
 
-    beforeEach(function () {
+    before(function () {
       vector = Vector.create([1, 2, 3]);
       matrix = Matrix.create([ [1, 2, 3] ]);
     });
@@ -235,21 +319,28 @@ describe('Utils', function () {
   });
 
   describe('writeJSON', function () {
-    var tempDir    = require('../package').directories.temp;
-    var tempModule = path.join(tempDir, 'utils-writeJSON-test');
-    var tempFile   = tempModule + '.json';
+    var tempDir
+      , tempModule
+      , tempFile
+      , setup;
 
-    var setup = require('./setups/xnor');
-
-    tempModule = path.join('../', tempModule);
+    before(function () {
+      tempDir    = require('../package').directories.temp;
+      tempModule = path.join(tempDir, 'utils-writeJSON-test');
+      tempFile   = tempModule + '.json';
+      tempModule = path.join('../', tempModule);
+      setup      = require('./setups/xnor');
+    });
 
     beforeEach(function (done) {
+      // create temp directory
       fs.mkdir(tempDir, function () {
         done();
       });
     });
 
     afterEach(function (done) {
+      // delete file and directory
       fs.unlink(tempFile, function () {
         fs.rmdir(tempDir, function () {
           done();

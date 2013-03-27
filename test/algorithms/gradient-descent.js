@@ -1,30 +1,38 @@
-var assert           = require('chai').assert;
-var brain            = require('../../lib/brain');
-var Algorithm        = require('../../lib/algorithm');
+var assert    = require('chai').assert
+  , brain     = require('../../lib/brain')
+  , Algorithm = require('../../lib/algorithm');
 
-var utils           = brain.utils;
-var sylvester       = brain.sylvester;
+var utils     = brain.utils
+  , sylvester = brain.sylvester;
 
-var Matrix          = sylvester.Matrix;
-var Network         = brain.Network;
-var GradientDescent = brain.algorithms.GradientDescent;
-var LogisticCost    = brain.algorithms.LogisticCost;
-var BackPropagation = brain.algorithms.BackPropagation;
+var Matrix = sylvester.Matrix;
+
+var Network         = brain.Network
+  , GradientDescent = brain.algorithms.GradientDescent
+  , LogisticCost    = brain.algorithms.LogisticCost
+  , BackPropagation = brain.algorithms.BackPropagation;
+
 
 describe('GradientDescent', function () {
-  var network, gradientDescent;
+  var network
+    , gradientDescent
+    , setup
+    , examples
+    , options;
 
+  before(function () {
   // load xnor with random weights
-  var setup    = require('../setups/bad-xnor');
-  var examples = utils.importExamples(setup.examples);
+    setup    = require('../setups/bad-xnor');
+    examples = utils.importExamples(setup.examples);
 
-  var options  = {
-    reportFrequency : 50,
-    learningRate    : 1,
-    targetError     : 0.2,
-    iterations      : 5000,
-    minimalSpeed    : 0
-  };
+    options  = {
+      reportFrequency : 50,
+      learningRate    : 1,
+      targetError     : 0.2,
+      iterations      : 5000,
+      minimalSpeed    : 0
+    };
+  });
 
   beforeEach(function () {
     network         = Network.fromJSON(setup);
@@ -98,15 +106,20 @@ describe('GradientDescent', function () {
   });
 
   describe('scaleDerivative', function () {
-    var derivative = Matrix.create([
-      [1, 2, 3],
-      [2, 3, 4]
-    ]);
+    var derivative
+      , scaledDerivative;
 
-    var scaledDerivative = Matrix.create([
-      [2, 4, 6],
-      [4, 6, 8]
-    ]);
+    before(function () {
+      derivative = Matrix.create([
+        [1, 2, 3],
+        [2, 3, 4]
+      ]);
+
+      scaledDerivative = Matrix.create([
+        [2, 4, 6],
+        [4, 6, 8]
+      ]);
+    });
 
     it('should scale derivatives correctly', function () {
       var result = gradientDescent
@@ -126,15 +139,16 @@ describe('GradientDescent', function () {
     });
 
     it('should use the given weights to compute the error', function () {
-      var firstRun  = gradientDescent.computeError(utils.randomWeights(network.layers));
-      var secondRun = gradientDescent.computeError(utils.randomWeights(network.layers));
+      var firstRun  = gradientDescent.computeError(utils.randomWeights(network.layers))
+        , secondRun = gradientDescent.computeError(utils.randomWeights(network.layers));
 
       assert.notEqual(firstRun, secondRun, 'errors are different, as expected');
     });
   });
 
   describe('run', function () {
-    var weights, optimizedWeights;
+    var weights
+      , optimizedWeights;
 
     before(function () {
       weights          = utils.randomWeights(network.layers);
@@ -170,12 +184,15 @@ describe('GradientDescent', function () {
     });
 
     it('should stop if the error of the weights is below the threshold', function () {
-      var options = {
+      var options
+        , errors;
+
+      options = {
         iterations  : Infinity,
         targetError : 0.4
       };
 
-      var errors = [];
+      errors = [];
 
       gradientDescent.setOptions(options);
 

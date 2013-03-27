@@ -1,20 +1,26 @@
-var assert    = require('chai').assert;
-var brain     = require('../lib/brain');
-var Algorithm = require('../lib/algorithm');
+var assert    = require('chai').assert
+  , brain     = require('../lib/brain')
+  , Algorithm = require('../lib/algorithm');
 
-var utils   = brain.utils;
-var Network = brain.Network;
+var utils   = brain.utils
+  , Network = brain.Network;
 
 describe('Algorithm', function () {
-  var algorithm, network;
+  var algorithm
+    , network
+    , setup
+    , examples
+    , options;
 
-  var setup    = require('./setups/xnor');
-  var examples = utils.importExamples(setup.examples);
-  var options  = {
-    a: 1,
-    b: 2,
-    c: 3
-  };
+  before(function () {
+    setup    = require('./setups/xnor');
+    examples = utils.importExamples(setup.examples);
+    options  = {
+      a: 1,
+      b: 2,
+      c: 3
+    };
+  });
 
   beforeEach(function () {
     network   = Network.fromJSON(setup);
@@ -52,7 +58,11 @@ describe('Algorithm', function () {
   });
 
   describe('getFactory', function () {
-    var create = Algorithm.getFactory(Algorithm);
+    var create;
+
+    before(function () {
+      create = Algorithm.getFactory(Algorithm);
+    });
 
     it('should return a function', function () {
       assert.isFunction(create, 'returns a function');

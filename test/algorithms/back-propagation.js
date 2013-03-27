@@ -1,20 +1,27 @@
-var assert = require('chai').assert;
-var brain  = require('../../lib/brain');
+var assert = require('chai').assert
+  , brain  = require('../../lib/brain');
 
-var utils             = brain.utils;
-var Network           = brain.Network;
-var NumericalGradient = brain.algorithms.NumericalGradient;
-var BackPropagation   = brain.algorithms.BackPropagation;
+var utils             = brain.utils
+  , Network           = brain.Network
+  , NumericalGradient = brain.algorithms.NumericalGradient
+  , BackPropagation   = brain.algorithms.BackPropagation;
 
 describe('BackPropagation', function () {
-  var backPropagation, network;
+  var backPropagation
+    , network
+    , setup
+    , examples
+    , options;
 
-  var setup    = require('../setups/bad-xnor');
-  var examples = utils.importExamples(setup.examples);
-  var options  = {
-    delta          : utils.zeroWeights(setup.layers),
-    regularization : 0
-  };
+  before(function () {
+    setup    = require('../setups/bad-xnor');
+    examples = utils.importExamples(setup.examples);
+
+    options  = {
+      delta          : utils.zeroWeights(setup.layers),
+      regularization : 0
+    };
+  });
 
   beforeEach(function () {
     network         = Network.fromJSON(setup);
@@ -42,31 +49,39 @@ describe('BackPropagation', function () {
   });
 
   describe('run', function () {
-    it('should return an array of matrices with the same dimensions as the weights', function () {
-      var derivatives = backPropagation.run();
+    var derivatives;
 
+    before(function () {
+      derivatives = backPropagation.run();
+    });
+
+    it('should return an array of matrices with the same dimensions as the weights', function () {
       assert.isTrue(network.validateWeights(derivatives), 'dimensions match');
     });
 
     it('should not return an array of matrices of 0', function () {
-      var derivatives = backPropagation.run();
-      var zero        = utils.zeroWeights(network.layers);
+      var zero = utils.zeroWeights(network.layers);
 
       assert.notDeepEqual(derivatives, zero, 'result is not 0');
     });
 
     it('should compute similar values as the numerical estimation using NumericalGradient', function () {
-      var numericalGradient = new NumericalGradient(network, examples);
+      var numericalGradient
+        , estimate
+        , i
+        , l
+        , j
+        , m
+        , k
+        , n;
 
-      var result   = backPropagation.run();
-      var estimate = numericalGradient.run();
+      numericalGradient = new NumericalGradient(network, examples);
+      estimate          = numericalGradient.run();
 
-      var i, l, j, m, k, n;
-
-      for (i = 0, l = result.length; i < l; i++) {
-        for (j = 0, m = result[i].elements.length; j < m; j++) {
-          for (k = 0, n = result[i].elements[j].length; k < n; k++) {
-            assert.closeTo(result[i].elements[j][k], estimate[i].elements[j][k], 1e-6, 'close to numerical estimate');
+      for (i = 0, l = derivatives.length; i < l; i++) {
+        for (j = 0, m = derivatives[i].elements.length; j < m; j++) {
+          for (k = 0, n = derivatives[i].elements[j].length; k < n; k++) {
+            assert.closeTo(derivatives[i].elements[j][k], estimate[i].elements[j][k], 1e-6, 'close to numerical estimate');
           }
         }
       }

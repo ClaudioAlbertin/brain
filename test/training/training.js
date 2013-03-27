@@ -1,51 +1,58 @@
-var assert    = require('chai').assert;
-var brain     = require('../../lib/brain');
-var Algorithm = require('../../lib/algorithm');
+var assert    = require('chai').assert
+  , brain     = require('../../lib/brain')
+  , Algorithm = require('../../lib/algorithm');
 
-var utils           = brain.utils;
-var Network         = brain.Network;
-var Training        = brain.Training;
-var TrainingResult  = brain.Training.Result;
-var LogisticCost    = brain.algorithms.LogisticCost;
-var BackPropagation = brain.algorithms.BackPropagation;
-var GradientDescent = brain.algorithms.GradientDescent;
+var utils           = brain.utils
+  , Network         = brain.Network
+  , Training        = brain.Training
+  , TrainingResult  = brain.Training.Result
+  , LogisticCost    = brain.algorithms.LogisticCost
+  , BackPropagation = brain.algorithms.BackPropagation
+  , GradientDescent = brain.algorithms.GradientDescent;
 
 describe('Training', function () {
-  var training;
+  var training
+    , setup
+    , examples
+    , network;
 
-  var setup    = require('../setups/xnor');
-  var examples = utils.importExamples(setup.examples);
+  before(function () {
+    setup    = require('../setups/xnor');
+    examples = utils.importExamples(setup.examples);
+  });
 
   beforeEach(function () {
     training = new Training();
+    network  = Network.fromJSON(setup);
   });
 
   describe('constructor', function () {
-    it('should set the given network', function () {
-      var network  = Network.fromJSON(setup);
-      var training = new Training(network);
+    var training
+      , cost
+      , derivative
+      , optimization;
 
+    beforeEach(function () {
+      network      = Network.fromJSON(setup);
+      cost         = new LogisticCost();
+      derivative   = new BackPropagation();
+      optimization = new GradientDescent();
+      training     = new Training(network, cost, derivative, optimization);
+    });
+
+    it('should set the given network', function () {
       assert.strictEqual(training.network, network, 'instances match');
     });
 
     it('should set the given cost algorithm', function () {
-      var cost     = new LogisticCost();
-      var training = new Training(null, cost);
-
       assert.strictEqual(training.cost, cost, 'instancesmatch');
     });
 
     it('should set the given derivative algorithm', function () {
-      var derivative = new BackPropagation();
-      var training   = new Training(null, null, derivative);
-
       assert.strictEqual(training.derivative, derivative, 'instances match');
     });
 
     it('should set the given optimization algorithm', function () {
-      var optimization = new GradientDescent();
-      var training     = new Training(null, null, null, optimization);
-
       assert.strictEqual(training.optimization, optimization, 'instances match');
     });
 
@@ -63,12 +70,6 @@ describe('Training', function () {
   });
 
   describe('setNetwork', function () {
-    var network;
-
-    beforeEach(function () {
-      network = Network.fromJSON(setup);
-    });
-
     it('should set the given network', function () {
       training.setNetwork(network);
 
@@ -156,7 +157,6 @@ describe('Training', function () {
 
   describe('run', function () {
     it('should return an instance of TrainingResult', function () {
-      var network = Network.fromJSON(setup);
       var result  = training.setNetwork(network).run(examples);
 
       assert.instanceOf(result, TrainingResult, 'is instance of TrainingResult');

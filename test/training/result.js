@@ -1,16 +1,22 @@
-var assert = require('chai').assert;
-var brain  = require('../../lib/brain');
+var assert = require('chai').assert
+  , brain  = require('../../lib/brain');
 
-var utils          = brain.utils;
-var Network        = brain.Network;
-var Training       = brain.Training;
-var TrainingResult = brain.Training.Result;
+var utils          = brain.utils
+  , Network        = brain.Network
+  , Training       = brain.Training
+  , TrainingResult = brain.Training.Result;
 
 describe('TrainingResult', function () {
-  var training, result, network;
+  var training
+    , result
+    , network
+    , setup
+    , weights;
 
-  var setup   = require('../setups/xnor');
-  var weights = utils.randomWeights(setup.layers);
+  before(function () {
+    setup   = require('../setups/xnor');
+    weights = utils.randomWeights(setup.layers);
+  });
 
   beforeEach(function () {
     network  = Network.fromJSON(setup);

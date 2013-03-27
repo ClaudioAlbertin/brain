@@ -1,27 +1,37 @@
-var assert = require('chai').assert;
-var brain  = require('../lib/brain');
+var assert = require('chai').assert
+  , brain  = require('../lib/brain');
 
-var sylvester = brain.sylvester;
-var utils     = brain.utils;
+var sylvester = brain.sylvester
+  , utils     = brain.utils;
 
-var Network = brain.Network;
-var Vector  = sylvester.Vector;
+var Network = brain.Network
+  , Vector  = sylvester.Vector;
 
 describe('Network', function () {
-  var network;
+  var setup
+    , layers
+    , weights
+    , examples
+    , network;
 
-  var setup    = require('./setups/xnor');
-  var layers   = setup.layers;
-  var weights  = utils.importWeights(setup.weights);
-  var examples = utils.importExamples(setup.examples);
+  before(function () {
+    setup    = require('./setups/xnor');
+    layers   = setup.layers;
+    weights  = utils.importWeights(setup.weights);
+    examples = utils.importExamples(setup.examples);
+  });
 
   beforeEach(function () {
     network = Network.fromJSON(setup);
   });
 
   describe('constructor', function () {
+    beforeEach(function () {
+      network = new Network(layers, weights);
+    });
+
     it('should set the given layers', function () {
-      assert.strictEqual(network.layers, layers, 'layers match');
+      assert.deepEqual(network.layers, layers, 'layers match');
     });
 
     it('should set the given weights', function () {
@@ -44,34 +54,38 @@ describe('Network', function () {
   });
 
   describe('setWeights', function () {
-    it('should set weights', function () {
+    it('should set the given weights', function () {
       network.setWeights(weights);
 
       assert.deepEqual(network.weights, weights, 'weights match');
     });
 
-    it('should throw an exception if weights are invalid', function () {
+    it('should throw an exception if the given weights are invalid', function () {
       var weights = utils.randomWeights([3, 2, 3]);
 
       assert.throws(function () {
         network.setWeights(weights);
-      }, Error, 'Dimension mismatch of given weights', 'throws error');
+      }, Error);
     });
   });
 
   describe('setActivation', function () {
-    it('should set the activation function', function () {
-      var activation = function (x) {
+    var activation;
+
+    before(function () {
+      activation = function (x) {
         return x;
       };
+    });
 
+    it('should set the activation function', function () {
       network.setActivation(activation);
 
       assert.isFunction(network.activation, 'function is set');
       assert.strictEqual(network.activation, activation, 'functions match');
     });
 
-    it('should do nothing if no function is given', function () {
+    it('should do keep present activation function if no function is given', function () {
       var activation = network.activation;
 
       network.setActivation();
@@ -95,7 +109,9 @@ describe('Network', function () {
 
   describe('run', function () {
     it('should compute correctly', function () {
-      var i, example, output;
+      var example
+        , output
+        , i;
 
       // iterate over given inputs
       for (i = 0; example = examples[i]; i++) {
@@ -107,17 +123,23 @@ describe('Network', function () {
   });
 
   describe('propagate', function () {
-    it('should return an array of vectors with correct dimensions', function () {
-      var output = network.propagate(examples[0].input);
-      var i, l;
+    var hypothesis;
 
-      assert.strictEqual(output.length, layers.length, 'network dimensions match');
+    before(function () {
+      hypothesis = network.propagate(examples[0].input);
+    });
+
+    it('should return an array of vectors with correct dimensions', function () {
+      var i
+        , l;
+
+      assert.strictEqual(hypothesis.length, layers.length, 'network dimensions match');
 
       for (i = 0, l = layers.length; i < l; i++) {
-        assert.instanceOf(output[i].raw, Vector, 'raw output is a vector');
-        assert.instanceOf(output[i].values, Vector, 'processed output is a vector');
-        assert.strictEqual(output[i].raw.dimensions().cols, layers[i], 'dimensions of raw output of layer ' + i + ' match');
-        assert.strictEqual(output[i].values.dimensions().cols, layers[i], 'dimensions of processed output of layer ' + i + ' match');
+        assert.instanceOf(hypothesis[i].raw, Vector, 'raw output is a vector');
+        assert.instanceOf(hypothesis[i].values, Vector, 'processed output is a vector');
+        assert.strictEqual(hypothesis[i].raw.dimensions().cols, layers[i], 'dimensions of raw output of layer ' + i + ' match');
+        assert.strictEqual(hypothesis[i].values.dimensions().cols, layers[i], 'dimensions of processed output of layer ' + i + ' match');
       }
     });
   });
@@ -129,8 +151,8 @@ describe('Network', function () {
       clone = network.clone();
     });
 
-    it('should return a different instance', function () {
-      assert.notStrictEqual(clone, network, 'instances are different');
+    it('should return a new instance', function () {
+      assert.notStrictEqual(clone, network, 'instances do not match');
     });
 
     it('should avoid changes of the original weights array', function () {
