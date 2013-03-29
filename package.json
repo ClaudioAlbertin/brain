@@ -31,7 +31,7 @@
   ],
   "dependencies": {
     "sylvester": "~0.0.21",
-    "underscore": "~1.4.4",
+    "underscore": "~1.4.4"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
