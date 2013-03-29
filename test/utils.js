@@ -1,6 +1,5 @@
-var assert = require('chai').assert;
-
-var brain  = require('../lib/brain');
+var assert = require('chai').assert
+  , brain  = require('../lib/brain');
 
 var sylvester = brain.sylvester
   , utils     = brain.utils;
