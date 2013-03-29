@@ -19,7 +19,7 @@ describe('NumericalGradient', function () {
     examples = utils.importExamples(setup.examples);
 
     options  = {
-      epsilon: 0.002
+      delta: 0.002
     };
   });
 
@@ -47,12 +47,6 @@ describe('NumericalGradient', function () {
 
     it('should set default options', function () {
       assert.isObject(numericalGradient.options, 'object set');
-    });
-  });
-
-  describe('create', function () {
-    it('should return an instance of NumericalGradient', function () {
-      assert.instanceOf(NumericalGradient.create(), NumericalGradient, 'is instance of NumericalGradient');
     });
   });
 

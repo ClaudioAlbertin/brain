@@ -17,7 +17,7 @@ describe('LinearCost', function () {
     examples = utils.importExamples(setup.examples);
 
     options  = {
-      lamda: 2
+      regularization: 2
     };
   });
 
@@ -37,12 +37,6 @@ describe('LinearCost', function () {
 
     it('should set the given options', function () {
       assert.deepEqual(linearCost.options, options, 'options match');
-    });
-  });
-
-  describe('create', function () {
-    it('should return an instance of LinearCost', function () {
-      assert.instanceOf(LinearCost.create(), LinearCost, 'is instance of LinearCost');
     });
   });
 

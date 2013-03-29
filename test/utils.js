@@ -1,6 +1,4 @@
-var fs     = require('fs')
-  , path   = require('path')
-  , assert = require('chai').assert;
+var assert = require('chai').assert;
 
 var brain  = require('../lib/brain');
 
@@ -315,57 +313,6 @@ describe('Utils', function () {
     it('should return a Matrix with correct dimensions', function () {
       assert.instanceOf(utils.toMatrix(vector), Matrix, 'returned object is matrix');
       assert.deepEqual(utils.toMatrix(vector), matrix, 'matrices match');
-    });
-  });
-
-  describe('writeJSON', function () {
-    var tempDir
-      , tempModule
-      , tempFile
-      , setup;
-
-    before(function () {
-      tempDir    = require('../package').directories.temp;
-      tempModule = path.join(tempDir, 'utils-writeJSON-test');
-      tempFile   = tempModule + '.json';
-      tempModule = path.join('../', tempModule);
-      setup      = require('./setups/xnor');
-    });
-
-    beforeEach(function (done) {
-      // create temp directory
-      fs.mkdir(tempDir, function () {
-        done();
-      });
-    });
-
-    afterEach(function (done) {
-      // delete file and directory
-      fs.unlink(tempFile, function () {
-        fs.rmdir(tempDir, function () {
-          done();
-        });
-      });
-    });
-
-    it('should create a file at the correct path', function (done) {
-      utils.writeJSON(tempFile, setup, function (err) {
-        if (err) throw err;
-
-        fs.exists(tempFile, function (exists) {
-          assert.isTrue(exists);
-          done();
-        });
-      });
-    });
-
-    it('should write a file that can be loaded and matches', function (done) {
-      utils.writeJSON(tempFile, setup, function (err) {
-        if (err) throw err;
-
-        assert.deepEqual(require(tempModule), setup, 'JSON matches');
-        done();
-      });
     });
   });
 

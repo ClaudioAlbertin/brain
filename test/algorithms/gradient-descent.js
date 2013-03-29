@@ -67,12 +67,6 @@ describe('GradientDescent', function () {
     });
   });
 
-  describe('create', function () {
-    it('should return an instance of GradientDescent', function () {
-      assert.instanceOf(GradientDescent.create(), GradientDescent, 'is instance of GradientDescent');
-    });
-  });
-
   describe('setCost', function () {
     it('should set the cost given algorithm', function () {
       var cost = new LogisticCost();

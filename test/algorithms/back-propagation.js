@@ -42,12 +42,6 @@ describe('BackPropagation', function () {
     });
   });
 
-  describe('create', function () {
-    it('should return an instance of BackPropagation', function () {
-      assert.instanceOf(BackPropagation.create(), BackPropagation, 'is instance of BackPropagation');
-    });
-  });
-
   describe('run', function () {
     var derivatives;
 

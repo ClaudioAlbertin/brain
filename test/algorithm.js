@@ -57,22 +57,6 @@ describe('Algorithm', function () {
     });
   });
 
-  describe('getFactory', function () {
-    var create;
-
-    before(function () {
-      create = Algorithm.getFactory(Algorithm);
-    });
-
-    it('should return a function', function () {
-      assert.isFunction(create, 'returns a function');
-    });
-
-    it('should create a new instance of the given algorithm', function () {
-      assert.instanceOf(create(), Algorithm, 'returns instance of given algorithm');
-    });
-  });
-
   describe('addReporter', function () {
     it('should add reporter to the given event', function () {
       algorithm.addReporter('test', console.log);

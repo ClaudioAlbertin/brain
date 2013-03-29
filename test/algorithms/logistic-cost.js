@@ -17,7 +17,7 @@ describe('LogisticCost', function () {
     examples = utils.importExamples(setup.examples);
 
     options  = {
-      lamda: 2
+      regularization: 2
     };
   });
 
@@ -37,12 +37,6 @@ describe('LogisticCost', function () {
 
     it('should set the given options', function () {
       assert.deepEqual(logisticCost.options, options, 'options match');
-    });
-  });
-
-  describe('create', function () {
-    it('should return an instance of LogisticCost', function () {
-      assert.instanceOf(LogisticCost.create(), LogisticCost, 'is instance of LogisticCost');
     });
   });
 

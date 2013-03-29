@@ -1,4 +1,6 @@
 var assert = require('chai').assert
+  , path   = require('path')
+  , fs     = require('fs')
   , brain  = require('../lib/brain');
 
 var sylvester = brain.sylvester
@@ -50,6 +52,47 @@ describe('Network', function () {
 
     it('should import weights correctly', function () {
       assert.deepEqual(network.weights, weights);
+    });
+  });
+
+  describe('saveJSON', function () {
+    var tempDir
+      , tempModule
+      , tempFile;
+
+    before(function () {
+      tempDir    = require('../package').directories.temp;
+      tempModule = path.join(tempDir, 'network-saveJSON-test');
+      tempFile   = tempModule + '.json';
+      tempModule = path.join('../', tempModule);
+    });
+
+    beforeEach(function (done) {
+      // create temp directory
+      fs.mkdir(tempDir, function () {
+        done();
+      });
+    });
+
+    afterEach(function (done) {
+      // delete file and directory
+      fs.unlink(tempFile, function () {
+        fs.rmdir(tempDir, function () {
+          done();
+        });
+      });
+    });
+
+    it('should create a file at the correct path', function () {
+      network.saveJSON(tempFile);
+
+      assert.isTrue(fs.existsSync(tempFile), 'file created');
+    });
+
+    it('should write a file that can be loaded and matches', function () {
+      network.saveJSON(tempFile);
+
+      assert.deepEqual(Network.fromJSON(require(tempModule)), network, 'networks match');
     });
   });
 

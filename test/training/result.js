@@ -21,7 +21,7 @@ describe('TrainingResult', function () {
   beforeEach(function () {
     network  = Network.fromJSON(setup);
     training = new Training(network);
-    result   = new TrainingResult(training, weights);
+    result   = new TrainingResult(training, { weights: weights });
   });
 
   describe('constructor', function () {
