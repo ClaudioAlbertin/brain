@@ -17,7 +17,8 @@ describe('LinearCost', function () {
     examples = utils.importExamples(setup.examples);
 
     options  = {
-      regularization: 2
+      reportFrequency : 5,
+      regularization  : 2
     };
   });
 

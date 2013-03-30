@@ -19,7 +19,8 @@ describe('NumericalGradient', function () {
     examples = utils.importExamples(setup.examples);
 
     options  = {
-      delta: 0.002
+      reportFrequency : 5,
+      delta           : 0.002
     };
   });
 

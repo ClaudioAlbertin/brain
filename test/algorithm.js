@@ -16,6 +16,7 @@ describe('Algorithm', function () {
     setup    = require('./setups/xnor');
     examples = utils.importExamples(setup.examples);
     options  = {
+      reportFrequency: 5,
       a: 1,
       b: 2,
       c: 3

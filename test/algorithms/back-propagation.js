@@ -18,8 +18,9 @@ describe('BackPropagation', function () {
     examples = utils.importExamples(setup.examples);
 
     options  = {
-      delta          : utils.zeroWeights(setup.layers),
-      regularization : 0
+      delta           : utils.zeroWeights(setup.layers),
+      regularization  : 0,
+      reportFrequency : 5
     };
   });
 
