@@ -13,7 +13,7 @@ describe('LogisticCost', function () {
     , options;
 
   before(function () {
-    setup    = require('../setups/xnor');
+    setup    = require('../setups/bad-xnor');
     examples = utils.importExamples(setup.examples);
 
     options  = {

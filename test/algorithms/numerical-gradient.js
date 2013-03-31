@@ -15,7 +15,7 @@ describe('NumericalGradient', function () {
     , options;
 
   before(function () {
-    setup    = require('../setups/bad-xnor');
+    setup    = require('../setups/xnor');
     examples = utils.importExamples(setup.examples);
 
     options  = {

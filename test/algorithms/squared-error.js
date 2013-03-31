@@ -3,17 +3,17 @@ var assert = require('chai').assert
 
 var utils      = brain.utils
   , Network    = brain.Network
-  , LinearCost = brain.algorithms.LinearCost;
+  , SquaredError = brain.algorithms.SquaredError;
 
-describe('LinearCost', function () {
+describe('SquaredError', function () {
   var network
-    , linearCost
+    , squaredError
     , setup
     , examples
     , options;
 
   before(function () {
-    setup    = require('../setups/xnor');
+    setup    = require('../setups/bad-xnor');
     examples = utils.importExamples(setup.examples);
 
     options  = {
@@ -24,20 +24,20 @@ describe('LinearCost', function () {
 
   beforeEach(function () {
     network    = Network.fromJSON(setup);
-    linearCost = new LinearCost(network, examples, options);
+    squaredError = new SquaredError(network, examples, options);
   });
 
   describe('constructor', function () {
     it('should set the given network', function () {
-      assert.deepEqual(linearCost.network, network, 'network matches');
+      assert.deepEqual(squaredError.network, network, 'network matches');
     });
 
     it('should set the given examples', function () {
-      assert.deepEqual(linearCost.examples, examples, 'examples match');
+      assert.deepEqual(squaredError.examples, examples, 'examples match');
     });
 
     it('should set the given options', function () {
-      assert.deepEqual(linearCost.options, options, 'options match');
+      assert.deepEqual(squaredError.options, options, 'options match');
     });
   });
 
@@ -45,7 +45,7 @@ describe('LinearCost', function () {
     var result;
 
     before(function () {
-      result = linearCost.run();
+      result = squaredError.run();
     });
 
     it('should return a realistic error value', function () {
