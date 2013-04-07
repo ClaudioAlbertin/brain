@@ -212,7 +212,7 @@ describe('Utils', function () {
       scale = utils.findScale(data);
     });
 
-    it('should return values between -1 and 1 (given the average of the data is 0)', function () {
+    it('should return values between -1 and ', function () {
       var result
         , x
         , i;
