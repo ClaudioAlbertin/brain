@@ -5,28 +5,38 @@ const jshint = require('gulp-jshint');
 const mocha  = require('gulp-mocha');
 const del    = require('del');
 
+const paths = {
+  lib: 'lib/**/*.js',
+  test: 'test/**/*.js',
+  build: 'build'
+}
+
 gulp.task('lint', function () {
   gulp
-    .src(['lib/**/*.js', 'test/**/*.js'])
+    .src([paths.lib, paths.test])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('test', ['lint'], function () {
   return gulp
-    .src('test/**/*.js', { read: false })
+    .src(paths.test, { read: false })
     .pipe(mocha({
       reporter: 'dot'
     }));
 
 });
 
-gulp.task('build', function () {
+gulp.task('build', ['test'], function () {
   // TODO
 });
 
 gulp.task('clean', function () {
-  return del('build');
+  return del(paths.build);
 });
 
-gulp.task('default', ['test', 'build']);
+gulp.task('watch', function () {
+  gulp.watch([paths.lib, paths.test], ['test']);
+});
+
+gulp.task('default', ['watch']);

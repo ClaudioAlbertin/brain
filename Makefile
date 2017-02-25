@@ -1,15 +1,15 @@
 
 default:
-	grunt default
+	gulp
 
 .PHONY: test
 test:
-	grunt test
+	gulp test
 
 .PHONY: build
 build:
-	grunt build
+	gulp build
 
 .PHONY: clean
 clean:
-	rm -rf ./build
+	gulp clean

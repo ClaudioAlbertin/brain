@@ -19,7 +19,7 @@
   "node": true,
   "browser": true,
   "strict": false,
-  //"laxcomma": true,
+  "laxcomma": true,
   "globals": {
     "before": false,
     "after": false,
