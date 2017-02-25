@@ -16,9 +16,9 @@
     "temp": "temp"
   },
   "scripts": {
-    "test": "grunt test",
-    "build": "grunt build",
-    "cloc": "cloc ./ --exclude-dir=node_modules,build --exclude-ext=sublime-project,sublime-workspace,DS_Store"
+    "test": "make test",
+    "build": "make build",
+    "cloc": "make cloc"
   },
   "repository": {
     "type": "git",
