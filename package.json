@@ -1,7 +1,7 @@
 {
-  "name": "brain",
-  "version": "0.0.1a",
-  "description": "flexible library for creating, training and analyzing artificial neural networks",
+  "name": "brainjs",
+  "version": "0.0.1",
+  "description": "Flexible library for creating, training and analyzing multi-layer feed-forward artificial neural networks",
   "author": {
     "name": "Claudio Albertin",
     "email": "<claudio.albertin@me.com>"
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ClaudioAlbertin/brain.git"
+    "url": "https://github.com/ClaudioAlbertin/brainjs.git"
   },
   "keywords": [
     "neural network",
