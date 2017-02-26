@@ -22,12 +22,13 @@ const brain = require('brainjs');
 
 Networks consist of an array describing the number and size of its layers, a matrix of weights and an activation function used in the neurons.
 
-Vectors and matrices should be given as `sylvester` objects.
+Internally [sylvester](http://sylvester.jcoglan.com) is used for matrix operations and matrices (and vectors) taken as arguments are expected to be sylvester objects.
+Sylvester is exported at `brain.sylvester` and shortcuts to the `Matrix` and `Vector` classes are provided at `brain.Matrix` and `brain.Vector` respectively.
 
 ```js
-let inputs = new brain.sylvester.Vector([2, 5, 6, 4, 3]);
+let inputs = new brain.Vector([2, 5, 6, 4, 3]);
 
-let weights = new brain.sylvester.Matrix([
+let weights = new brain.Matrix([
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9]
