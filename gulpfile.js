@@ -1,9 +1,15 @@
 'strict mode';
 
-const gulp   = require('gulp');
-const jshint = require('gulp-jshint');
-const mocha  = require('gulp-mocha');
-const del    = require('del');
+const gulp       = require('gulp');
+const gutil      = require('gulp-util');
+const jshint     = require('gulp-jshint');
+const mocha      = require('gulp-mocha');
+const del        = require('del');
+const uglify     = require('gulp-uglify');
+const browserify = require('browserify');
+const source     = require('vinyl-source-stream');
+const buffer     = require('vinyl-buffer');
+const sourcemaps = require('gulp-sourcemaps');
 
 const paths = {
   lib: 'lib/**/*.js',
@@ -12,7 +18,7 @@ const paths = {
 }
 
 gulp.task('lint', function () {
-  gulp
+  return gulp
     .src([paths.lib, paths.test])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
@@ -27,8 +33,19 @@ gulp.task('test', ['lint'], function () {
 
 });
 
-gulp.task('build', ['test'], function () {
-  // TODO
+gulp.task('build', ['test', 'clean'], function () {
+  let b = browserify({
+    entries: './lib/brain.js',
+  });
+
+  return b.bundle()
+    .pipe(source('brain.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(uglify())
+        .on('error', gutil.log)
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('clean', function () {
