@@ -1,4 +1,5 @@
-brain.js [![Build Status](https://img.shields.io/travis/ClaudioAlbertin/brain.svg)](https://travis-ci.org/ClaudioAlbertin/brain) [![Dependencies](https://img.shields.io/david/ClaudioAlbertin/brain.svg)](https://david-dm.org/ClaudioAlbertin/brain)
+brain.js
+[![Build Status](https://img.shields.io/travis/ClaudioAlbertin/brain.js.svg)](https://travis-ci.org/ClaudioAlbertin/brain.js) [![Dependencies](https://img.shields.io/david/ClaudioAlbertin/brain.js.svg)](https://david-dm.org/ClaudioAlbertin/brain.js)
 ========
 
-Flexible library for creating, training and analyzing artificial neural networks.
+Flexible library for creating, training and analyzing multi-layer feed-forward artificial neural networks.
