@@ -41,7 +41,7 @@ To create a network, pass an array describing the desired layers where every ele
 let network = new brain.Network([2, 4, 1], weights);
 ```
 
-This would correspond to the following network topology featuring two input neurons, a single output neuron, a hidden layer consisitig of foursc neurons, as well as bias neurons for every layer but the last one:
+This would correspond to the following network topology featuring two input neurons, a single output neuron, a hidden layer consisting of four neurons, as well as bias neurons for every layer but the last one:
 
 ```
     ◆
