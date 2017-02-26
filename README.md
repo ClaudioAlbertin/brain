@@ -67,8 +67,10 @@ let weights = brain.utils.randomWeights([2, 4, 1]);
 Alternatively, to load a network that has already been specified, potentially trained, and saved to a JSON file, simply do:
 
 ```js
-let network = brain.Network.fromJSON(require('xnor.json'));
+let network = brain.Network.fromJSON(require('./xnor'));
 ```
+
+*Note that due to the way `require()` works in node.js the `.json` file extension is not required, however the file path must start with `.` or `/` to not be considered an npm module.*
 
 ### Executing a network
 
