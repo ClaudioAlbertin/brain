@@ -34,11 +34,12 @@ gulp.task('test', ['lint'], function () {
 });
 
 gulp.task('build', ['test', 'clean'], function () {
-  let b = browserify({
-    entries: './lib/brain.js',
-  });
+  let bundle = browserify();
 
-  return b.bundle()
+  bundle.add('./lib/brain.js');
+  bundle.ignore('lapack');
+
+  return bundle.bundle()
     .pipe(source('brain.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
